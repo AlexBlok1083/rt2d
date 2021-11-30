@@ -5,6 +5,7 @@ project (rt2d)
 # delete CMakeCache.txt from the build directory when you edit these options
 ####################################################################
 OPTION(MAKE_START "Make RT2D start application" ON)
+OPTION(MAKE_SURVIVESPACE "Make RT2D survivespace application" ON)
 OPTION(MAKE_DEMO "Make RT2D demo (tests) application" ON)
 OPTION(MAKE_CANVAS_DEMO "Make RT2D Canvas demo (tests) application" ON)
 OPTION(MAKE_FLOCKING "Make flocking application" ON)
@@ -165,6 +166,27 @@ IF(MAKE_START)
 	# Copy assets to the build directory
 	file(
 		COPY start/assets
+		DESTINATION ${CMAKE_BINARY_DIR}
+	)
+ENDIF()
+
+####################################################################
+# survivespace                                                            #
+####################################################################
+IF(MAKE_SURVIVESPACE)
+	add_executable(survivespace
+		survivespace/main.cpp
+		survivespace/myentity.cpp
+		survivespace/myentity.h
+		survivespace/myscene.cpp
+		survivespace/myscene.h
+	)
+	target_link_libraries(start
+		${ALL_GRAPHICS_LIBS}
+	)
+	# Copy assets to the build directory
+	file(
+		COPY survivespace/assets
 		DESTINATION ${CMAKE_BINARY_DIR}
 	)
 ENDIF()
