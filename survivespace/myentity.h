@@ -17,6 +17,9 @@ class MyEntity : public Entity
 public:
 	/// @brief Constructor
 	MyEntity();
+
+	Vector2 velocity = Vector2(0, 0);
+	
 	/// @brief Destructor
 	virtual ~MyEntity();
 
@@ -26,6 +29,7 @@ public:
 	virtual void update(float deltaTime);
 
 private:
+	
 	/* add your private declarations */
 };
 

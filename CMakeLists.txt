@@ -181,7 +181,7 @@ IF(MAKE_SURVIVESPACE)
 		survivespace/myscene.cpp
 		survivespace/myscene.h
 	)
-	target_link_libraries(start
+	target_link_libraries(survivespace
 		${ALL_GRAPHICS_LIBS}
 	)
 	# Copy assets to the build directory

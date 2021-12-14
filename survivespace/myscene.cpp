@@ -8,6 +8,7 @@
 #include <sstream>
 
 #include "myscene.h"
+#include "myentity.h"
 
 MyScene::MyScene() : Scene()
 {
@@ -17,8 +18,7 @@ MyScene::MyScene() : Scene()
 	// create a single instance of MyEntity in the middle of the screen.
 	// the Sprite is added in Constructor of MyEntity.
 	myentity = new MyEntity();
-	myentity->position = Point2(SWIDTH/4, SHEIGHT/2);
-
+	myentity->position = Point2(SWIDTH/2, SHEIGHT/2);
 	// create the scene 'tree'
 	// add myentity to this Scene as a child.
 	this->addChild(myentity);
@@ -54,11 +54,33 @@ void MyScene::update(float deltaTime)
 	}
 
 	// ###############################################################
-	// Rotate color
+	// Movement spaceship
 	// ###############################################################
-	if (t.seconds() > 0.0333f) {
-		RGBAColor color = myentity->sprite()->color;
-		myentity->sprite()->color = Color::rotate(color, 0.01f);
-		t.start();
+	float thrustspeed = 5;
+	
+	int mousex = input()->getMouseX();
+	int mousey = input()->getMouseY();
+
+	Vector2 mousexy = Vector2(mousex, mousey);
+	Vector2 cursorradius = Vector2(myentity->position, mousexy);
+
+	float entityAngle = myentity->velocity.getAngle();
+
+	if (input()->getKey(KeyCode::W)) {
+		myentity->velocity += (mousexy - myentity->position) * thrustspeed * deltaTime; // thrust
+	}	
+	if (input()->getKey(KeyCode::S)) {
+		myentity->velocity -= (mousexy - myentity->position) * thrustspeed * deltaTime; // thrust
 	}
+
+	
+	myentity->rotation.z = cursorradius.getAngle() - HALF_PI;
+	myentity->position += myentity->velocity * deltaTime;
+
+	std::cout << cursorradius.getAngle() << std::endl;
+
+	if (myentity->position.x < 0) { myentity->position.x = 0; }
+	if (myentity->position.x > SWIDTH) { myentity->position.x = SWIDTH; }
+	if (myentity->position.y < 0) { myentity->position.y = 0; }
+	if (myentity->position.y > SHEIGHT) { myentity->position.y = SHEIGHT; }
 }
