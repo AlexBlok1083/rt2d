@@ -74,7 +74,7 @@ void MyScene::update(float deltaTime)
 	}
 
 	
-	myentity->rotation.z = cursorradius.getAngle() - HALF_PI;
+	myentity->rotation.z = cursorradius.getAngle() -  HALF_PI;
 	myentity->position += myentity->velocity * deltaTime;
 
 	std::cout << cursorradius.getAngle() << std::endl;

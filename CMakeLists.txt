@@ -180,6 +180,8 @@ IF(MAKE_SURVIVESPACE)
 		survivespace/myentity.h
 		survivespace/myscene.cpp
 		survivespace/myscene.h
+		survivespace/bullet.cpp
+		survivespace/bullet.h
 	)
 	target_link_libraries(survivespace
 		${ALL_GRAPHICS_LIBS}
