@@ -63,6 +63,7 @@ void MyScene::update(float deltaTime)
 
 	Vector2 mousexy = Vector2(mousex, mousey);
 	Vector2 cursorradius = Vector2(myentity->position, mousexy);
+	Vector2 brake = Vector2(0, 0);
 
 	float entityAngle = myentity->velocity.getAngle();
 
@@ -70,14 +71,17 @@ void MyScene::update(float deltaTime)
 		myentity->velocity += (mousexy - myentity->position) * thrustspeed * deltaTime; // thrust
 	}	
 	if (input()->getKey(KeyCode::S)) {
-		myentity->velocity -= (mousexy - myentity->position) * thrustspeed * deltaTime; // thrust
+		myentity->velocity -= (mousexy - myentity->position) * thrustspeed * deltaTime; // brake
 	}
-
+	if (input()->getMouseDown(KeyCode::Left)) {
+		
 	
+	
+	}
 	myentity->rotation.z = cursorradius.getAngle() -  HALF_PI;
 	myentity->position += myentity->velocity * deltaTime;
 
-	std::cout << cursorradius.getAngle() << std::endl;
+	std::cout << myentity->velocity << std::endl;
 
 	if (myentity->position.x < 0) { myentity->position.x = 0; }
 	if (myentity->position.x > SWIDTH) { myentity->position.x = SWIDTH; }
