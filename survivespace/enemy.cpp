@@ -1,17 +1,17 @@
 
 #include "bullet.h"
 
-Bullet::Bullet() : Entity()
+Enemy::Enemy() : Entity()
 {
 	this->addSprite("assets/bullet.tga");
 }
 
-Bullet::~Bullet()
+Enemy::~Enemy()
 {
 
 }
 
-void Bullet::update(float deltaTime)
+void Enemy::update(float deltaTime)
 {
 	position += velocity;
 }

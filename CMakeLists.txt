@@ -182,6 +182,8 @@ IF(MAKE_SURVIVESPACE)
 		survivespace/myscene.h
 		survivespace/bullet.cpp
 		survivespace/bullet.h
+		survivespace/enemy.cpp
+		survivespace/enemy.h
 	)
 	target_link_libraries(survivespace
 		${ALL_GRAPHICS_LIBS}

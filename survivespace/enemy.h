@@ -1,19 +1,19 @@
 
-#ifndef MYBULLET_H
-#define MYBULLET_H
+#ifndef MYENEMY_H
+#define MYENEMY_H
 
 #include <rt2d/entity.h>
 
 /// @brief The MyEntity class is the Entity implementation.
-class Bullet : public Entity
+class Enemy : public Entity
 {
 public:
 	/// @brief Constructor
-	Bullet();
+	Enemy();
 	
 	Vector2 velocity = Vector2(0, 0);
 	/// @brief Destructor
-	virtual ~Bullet();
+	virtual ~Enemy();
 
 	/// @brief update is automatically called every frame
 	/// @param deltaTime the elapsed time in seconds
@@ -25,4 +25,4 @@ private:
 	/* add your private declarations */
 };
 
-#endif /* MYBULLET_H */
+#endif /* MYENEMY_H */

@@ -9,6 +9,7 @@
 
 #include "myscene.h"
 #include "myentity.h"
+#include "bullet.h"
 
 MyScene::MyScene() : Scene()
 {
@@ -34,6 +35,17 @@ MyScene::~MyScene()
 	delete myentity;
 }
 
+void MyScene::updateBullets(float deltaTime)
+{
+	for (int i = bullets.size() - 1; i >= 0; i--) {
+		if (bullets[i]->position.x > SWIDTH || bullets[i]->position.x < 0 || bullets[i]->position.y < 0 || bullets[i]->position.y > SHEIGHT) {
+			removeChild(bullets[i]);
+			delete bullets[i];
+			bullets.erase(bullets.begin() + i);
+		}
+	}
+}
+
 void MyScene::update(float deltaTime)
 {
 	// ###############################################################
@@ -56,7 +68,8 @@ void MyScene::update(float deltaTime)
 	// ###############################################################
 	// Movement spaceship
 	// ###############################################################
-	float thrustspeed = 5;
+	float thrustspeed = 3;
+	float bulletspeed = 5;
 	
 	int mousex = input()->getMouseX();
 	int mousey = input()->getMouseY();
@@ -71,17 +84,25 @@ void MyScene::update(float deltaTime)
 		myentity->velocity += (mousexy - myentity->position) * thrustspeed * deltaTime; // thrust
 	}	
 	if (input()->getKey(KeyCode::S)) {
-		myentity->velocity -= (mousexy - myentity->position) * thrustspeed * deltaTime; // brake
+		myentity->velocity -= (mousexy - myentity->position) * (thrustspeed / 2) * deltaTime; // brake
 	}
-	if (input()->getMouseDown(KeyCode::Left)) {
-		
-	
-	
+	if (input()->getMouseDown(0)) {
+		std::cout << "Shoot" << std::endl;
+		Vector2 bulletvel = (mousexy - myentity->position) * bulletspeed * deltaTime;
+		bulletvel.normalize();
+		Bullet* b = new Bullet();
+		addChild(b);
+		bullets.push_back(b);
+		b->position = myentity->position;
+		b->rotation = myentity->rotation;
+		b->velocity = bulletvel;
 	}
+
+	updateBullets(deltaTime);
 	myentity->rotation.z = cursorradius.getAngle() -  HALF_PI;
 	myentity->position += myentity->velocity * deltaTime;
 
-	std::cout << myentity->velocity << std::endl;
+//	std::cout << myentity->velocity << std::endl;
 
 	if (myentity->position.x < 0) { myentity->position.x = 0; }
 	if (myentity->position.x > SWIDTH) { myentity->position.x = SWIDTH; }

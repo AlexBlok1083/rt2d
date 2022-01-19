@@ -12,6 +12,7 @@
 #include <rt2d/scene.h>
 
 #include "myentity.h"
+#include "bullet.h"
 
 /// @brief The MyScene class is the Scene implementation.
 class MyScene : public Scene
@@ -26,12 +27,15 @@ public:
 	/// @param deltaTime the elapsed time in seconds
 	/// @return void
 	virtual void update(float deltaTime);
+	virtual void updateBullets(float deltaTime);
 
 private:
 	/// @brief the rotating square in the middle of the screen
 	MyEntity* myentity;
 	/// @brief a Timer to rotate the color every n seconds
 	Timer t;
+
+	std::vector<Bullet*> bullets;
 };
 
 #endif /* SCENE00_H */
