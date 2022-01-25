@@ -1,9 +1,10 @@
 
-#include "bullet.h"
+#include "enemy.h"
 
 Enemy::Enemy() : Entity()
 {
-	this->addSprite("assets/bullet.tga");
+	this->addSprite("assets/enemy.tga");
+	this->scale = Point(3, 3);
 }
 
 Enemy::~Enemy()

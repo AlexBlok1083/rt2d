@@ -13,6 +13,7 @@
 
 #include "myentity.h"
 #include "bullet.h"
+#include "enemy.h"
 
 /// @brief The MyScene class is the Scene implementation.
 class MyScene : public Scene
@@ -28,6 +29,8 @@ public:
 	/// @return void
 	virtual void update(float deltaTime);
 	virtual void updateBullets(float deltaTime);
+	virtual void updateEnemys(float deltaTime);
+	virtual void enemySpawn(float deltaTime);
 
 private:
 	/// @brief the rotating square in the middle of the screen
@@ -36,6 +39,7 @@ private:
 	Timer t;
 
 	std::vector<Bullet*> bullets;
+	std::vector<Enemy*> enemys;
 };
 
 #endif /* SCENE00_H */

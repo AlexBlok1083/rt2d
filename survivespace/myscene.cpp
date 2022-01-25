@@ -46,6 +46,26 @@ void MyScene::updateBullets(float deltaTime)
 	}
 }
 
+void MyScene::updateEnemys(float deltaTime)
+{
+	for (int i = enemys.size() - 1; i >= 0; i--) {
+		if (enemys[i]->position.x > SWIDTH || enemys[i]->position.x < 0 || enemys[i]->position.y < 0 || enemys[i]->position.y > SHEIGHT) {
+			removeChild(enemys[i]);
+			delete enemys[i];
+			enemys.erase(enemys.begin() + i);
+		}
+	}
+}
+
+void MyScene::enemySpawn(float deltaTime)
+{
+	Enemy* e = new Enemy();
+	addChild(e);
+	enemys.push_back(e);
+	e->position.x = SWIDTH/2;
+	e->position.y = 50;
+}
+
 void MyScene::update(float deltaTime)
 {
 	// ###############################################################
@@ -69,7 +89,8 @@ void MyScene::update(float deltaTime)
 	// Movement spaceship
 	// ###############################################################
 	float thrustspeed = 3;
-	float bulletspeed = 5;
+	float bulletspeed = 15;
+	float enemyspeed = 2;
 	
 	int mousex = input()->getMouseX();
 	int mousey = input()->getMouseY();
@@ -84,8 +105,9 @@ void MyScene::update(float deltaTime)
 		myentity->velocity += (mousexy - myentity->position) * thrustspeed * deltaTime; // thrust
 	}	
 	if (input()->getKey(KeyCode::S)) {
-		myentity->velocity -= (mousexy - myentity->position) * (thrustspeed / 2) * deltaTime; // brake
+		myentity->velocity -= (mousexy - myentity->position) * (thrustspeed / 2) * deltaTime; // brake/
 	}
+
 	if (input()->getMouseDown(0)) {
 		std::cout << "Shoot" << std::endl;
 		Vector2 bulletvel = (mousexy - myentity->position) * bulletspeed * deltaTime;
@@ -98,7 +120,14 @@ void MyScene::update(float deltaTime)
 		b->velocity = bulletvel;
 	}
 
+	if (t.seconds() > 5) {
+		enemySpawn(deltaTime);
+		Vector2 enemyvel = ( - myentity->position) * enemyspeed * deltaTime;
+		t.start();
+	}
+
 	updateBullets(deltaTime);
+	updateEnemys(deltaTime);
 	myentity->rotation.z = cursorradius.getAngle() -  HALF_PI;
 	myentity->position += myentity->velocity * deltaTime;
 
