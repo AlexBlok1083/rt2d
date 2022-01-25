@@ -29,17 +29,21 @@ public:
 	/// @return void
 	virtual void update(float deltaTime);
 	virtual void updateBullets(float deltaTime);
-	virtual void updateEnemys(float deltaTime);
+	virtual void updateEnemies(float deltaTime);
 	virtual void enemySpawn(float deltaTime);
+
+	//spawnrate enemy
+	float enemyspawnrate = 5;
 
 private:
 	/// @brief the rotating square in the middle of the screen
 	MyEntity* myentity;
 	/// @brief a Timer to rotate the color every n seconds
-	Timer t;
+	Timer spawntimer;
+	Timer timer;
 
 	std::vector<Bullet*> bullets;
-	std::vector<Enemy*> enemys;
+	std::vector<Enemy*> enemies;
 };
 
 #endif /* SCENE00_H */

@@ -14,7 +14,10 @@
 MyScene::MyScene() : Scene()
 {
 	// start the timer.
-	t.start();
+	spawntimer.start();
+	timer.start();
+
+	srand(time(nullptr));
 
 	// create a single instance of MyEntity in the middle of the screen.
 	// the Sprite is added in Constructor of MyEntity.
@@ -46,24 +49,27 @@ void MyScene::updateBullets(float deltaTime)
 	}
 }
 
-void MyScene::updateEnemys(float deltaTime)
+void MyScene::updateEnemies(float deltaTime)
 {
-	for (int i = enemys.size() - 1; i >= 0; i--) {
-		if (enemys[i]->position.x > SWIDTH || enemys[i]->position.x < 0 || enemys[i]->position.y < 0 || enemys[i]->position.y > SHEIGHT) {
-			removeChild(enemys[i]);
-			delete enemys[i];
-			enemys.erase(enemys.begin() + i);
+	for (int i = enemies.size() - 1; i >= 0; i--) {
+		if (enemies[i]->position.x > SWIDTH || enemies[i]->position.x < 0 || enemies[i]->position.y < 0 || enemies[i]->position.y > SHEIGHT) {
+			removeChild(enemies[i]);
+			delete enemies[i];
+			enemies.erase(enemies.begin() + i);
 		}
 	}
 }
 
-void MyScene::enemySpawn(float deltaTime)
+void MyScene::enemySpawn(float)
 {
 	Enemy* e = new Enemy();
 	addChild(e);
-	enemys.push_back(e);
-	e->position.x = SWIDTH/2;
-	e->position.y = 50;
+	enemies.push_back(e);
+	e->position.x = rand() % 1280;
+	e->position.y = 0;
+	Vector2 enemyvel = myentity->position - e->position;
+	enemyvel.normalize();	
+	e->velocity = enemyvel;
 }
 
 void MyScene::update(float deltaTime)
@@ -75,23 +81,12 @@ void MyScene::update(float deltaTime)
 		this->stop();
 	}
 
-	// ###############################################################
-	// Spacebar scales myentity
-	// ###############################################################
-	if (input()->getKeyDown(KeyCode::Space)) {
-		myentity->scale = Point(0.5f, 0.5f);
-	}
-	if (input()->getKeyUp(KeyCode::Space)) {
-		myentity->scale = Point(1.0f, 1.0f);
-	}
-
-	// ###############################################################
-	// Movement spaceship
-	// ###############################################################
+	//Speed aangeven.
 	float thrustspeed = 3;
 	float bulletspeed = 15;
 	float enemyspeed = 2;
-	
+
+	//Muis locatiee op vragen.
 	int mousex = input()->getMouseX();
 	int mousey = input()->getMouseY();
 
@@ -120,19 +115,27 @@ void MyScene::update(float deltaTime)
 		b->velocity = bulletvel;
 	}
 
-	if (t.seconds() > 5) {
+	if (spawntimer.seconds() > enemyspawnrate) {
 		enemySpawn(deltaTime);
-		Vector2 enemyvel = ( - myentity->position) * enemyspeed * deltaTime;
-		t.start();
+		spawntimer.start();
 	}
 
+	if (timer.seconds() > 5 && enemyspawnrate > 0.25) {
+		enemyspawnrate -= 0.25;
+		timer.start();
+		std::cout << enemyspawnrate << std::endl;
+	}
+
+	//Het verwijderen van enetyties wanneer ze uit het scherm gaan.
 	updateBullets(deltaTime);
-	updateEnemys(deltaTime);
+	updateEnemies(deltaTime);
+
 	myentity->rotation.z = cursorradius.getAngle() -  HALF_PI;
 	myentity->position += myentity->velocity * deltaTime;
-
-//	std::cout << myentity->velocity << std::endl;
-
+	
+	//std::cout<< rand() % 1280 <<std::endl;
+	
+	// Boarders voor Player
 	if (myentity->position.x < 0) { myentity->position.x = 0; }
 	if (myentity->position.x > SWIDTH) { myentity->position.x = SWIDTH; }
 	if (myentity->position.y < 0) { myentity->position.y = 0; }

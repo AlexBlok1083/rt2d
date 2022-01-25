@@ -14,5 +14,5 @@ Enemy::~Enemy()
 
 void Enemy::update(float deltaTime)
 {
-	position += velocity;
+	position += velocity * 500 * deltaTime;
 }
