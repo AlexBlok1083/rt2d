@@ -10,6 +10,7 @@
 #include "myscene.h"
 #include "myentity.h"
 #include "bullet.h"
+#include "collision.h"
 
 MyScene::MyScene() : Scene()
 {
@@ -126,6 +127,24 @@ void MyScene::update(float deltaTime)
 		std::cout << enemyspawnrate << std::endl;
 	}
 
+	for (int i = 0; i < enemies.size(); i++) {
+		if (Collision::circle2circle(myentity, enemies[i])) {
+			this->stop();
+		}
+	}
+
+	for (int i = enemies.size() - 1; i >= 0; i--) {
+		for (int ii = 0; ii < bullets.size(); ii++) {
+			if(Collision::circle2rectangle(enemies[i], bullets[ii])) {
+				removeChild(enemies[i]);
+				delete enemies[i];
+				enemies.erase(enemies.begin() + i);
+
+				std::cout << "Enemy geraakt door bullet" << std::endl;
+				break;
+			}
+		}
+	}
 	//Het verwijderen van enetyties wanneer ze uit het scherm gaan.
 	updateBullets(deltaTime);
 	updateEnemies(deltaTime);

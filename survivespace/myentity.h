@@ -10,9 +10,10 @@
 #define MYENTITY_H
 
 #include <rt2d/entity.h>
+#include "collisionentity.h"
 
 /// @brief The MyEntity class is the Entity implementation.
-class MyEntity : public Entity
+class MyEntity : public Collisionentity
 {
 public:
 	/// @brief Constructor

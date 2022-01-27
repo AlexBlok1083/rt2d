@@ -3,9 +3,10 @@
 #define MYENEMY_H
 
 #include <rt2d/entity.h>
+#include "collisionentity.h"
 
 /// @brief The MyEntity class is the Entity implementation.
-class Enemy : public Entity
+class Enemy : public Collisionentity
 {
 public:
 	/// @brief Constructor

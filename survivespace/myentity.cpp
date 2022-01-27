@@ -6,9 +6,10 @@
 
 #include "myentity.h"
 
-MyEntity::MyEntity() : Entity()
+MyEntity::MyEntity() : Collisionentity()
 {
 	this->addSprite("assets/playertest.tga");
+	radius = 5;
 }
 
 MyEntity::~MyEntity()

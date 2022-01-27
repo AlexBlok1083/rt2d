@@ -1,9 +1,11 @@
 
 #include "bullet.h"
 
-Bullet::Bullet() : Entity()
+Bullet::Bullet() : Collisionentity()
 {
 	this->addSprite("assets/bullet.tga");
+	width = 5;
+	height = 15;
 }
 
 Bullet::~Bullet()
